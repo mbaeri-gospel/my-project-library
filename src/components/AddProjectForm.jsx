@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../config/supabaseClient';
 
 export default function AddProjectForm({ userId, onProjectAdded }) {

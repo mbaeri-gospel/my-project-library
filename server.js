@@ -5,10 +5,6 @@ import * as cheerio from 'cheerio';
 import crypto from 'crypto';
 import process from 'node:process';
 
-app.get('/ping', (req, res) => {
-  return res.status(200).send('Server is awake and active!');
-});
-
 const app = express();
 
 // 1. Enable Cross-Origin Resource Sharing so your GitHub page can communicate with Render
@@ -16,6 +12,11 @@ app.use(cors({
   origin: '*' // In production, replace with your actual GitHub Pages URL
 }));
 app.use(express.json());
+
+// 2. NOW YOU CAN ADD YOUR ROUTES safely
+app.get('/ping', (req, res) => {
+  return res.status(200).send('Server is awake and active!');
+});
 
 app.post('/api/scrape', async (req, res) => {
   const { targetUrl } = req.body;

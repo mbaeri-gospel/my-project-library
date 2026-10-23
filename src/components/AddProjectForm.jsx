@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '../config/supabaseClient';
 
+const SCRAPER_URL = import.meta.env.VITE_SCRAPER_URL;
+
 export default function AddProjectForm({ userId, onProjectAdded }) {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,8 +26,7 @@ export default function AddProjectForm({ userId, onProjectAdded }) {
     setLoading(true);
 
     try {
-      // Replace with your real Vercel deployment endpoint domain
-      const response = await fetch('https://project-library-scraper.onrender.com', {
+      const response = await fetch(SCRAPER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetUrl: url })

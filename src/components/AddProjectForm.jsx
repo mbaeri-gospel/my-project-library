@@ -21,7 +21,7 @@ export default function AddProjectForm({ userId, onProjectAdded }) {
 
     try {
       // Replace with your real Vercel deployment endpoint domain
-      const response = await fetch('https://vercel.app', {
+      const response = await fetch('https://project-library-scraper.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetUrl: url })

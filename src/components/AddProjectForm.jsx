@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '../config/supabaseClient';
 
+const SCRAPER_URL = import.meta.env.VITE_SCRAPER_URL;
+
 export default function AddProjectForm({ userId, onProjectAdded }) {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  
   // Editable form fields filled by the scraper
   const [formData, setFormData] = useState({
     projectName: '',
@@ -14,14 +15,12 @@ export default function AddProjectForm({ userId, onProjectAdded }) {
     uniqueWebId: ''
   });
 
-  // Call your secure Vercel scraper endpoint
   const handleFetchMetadata = async () => {
     if (!url) return alert('Please enter a project URL first!');
     setLoading(true);
 
     try {
-      // Replace with your real Vercel deployment endpoint domain
-      const response = await fetch('https://project-library-scraper.onrender.com', {
+       const response = await fetch(SCRAPER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetUrl: url })

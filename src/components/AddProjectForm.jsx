@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { supabase } from '../config/supabaseClient';
 
+// Configure this in each deployment environment (e.g. Render, local .env, etc.)
+const SCRAPER_URL = import.meta.env.VITE_SCRAPER_URL?.replace(/\/$/, '');
+
 export default function AddProjectForm({ userId, onProjectAdded }) {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Editable form fields filled by the scraper
   const [formData, setFormData] = useState({
     projectName: '',
@@ -14,14 +17,17 @@ export default function AddProjectForm({ userId, onProjectAdded }) {
     uniqueWebId: ''
   });
 
-  // Call your secure Vercel scraper endpoint
+  // Call the scraper backend configured for this environment
   const handleFetchMetadata = async () => {
     if (!url) return alert('Please enter a project URL first!');
+    if (!SCRAPER_URL) {
+      alert('Scraper URL is not configured. Set VITE_SCRAPER_URL in your environment.');
+      return;
+    }
     setLoading(true);
 
     try {
-      // Replace with your real Vercel deployment endpoint domain
-      const response = await fetch('https://project-library-scraper.onrender.com', {
+      const response = await fetch(SCRAPER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetUrl: url })
@@ -79,7 +85,7 @@ export default function AddProjectForm({ userId, onProjectAdded }) {
   return (
     <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md max-w-xl mx-auto text-gray-900 dark:text-gray-100">
       <h3 className="text-xl font-bold mb-4">📚 Add to Project Library</h3>
-      
+
       {/* URL Import Input */}
       <div className="mb-4 flex gap-2">
         <input
